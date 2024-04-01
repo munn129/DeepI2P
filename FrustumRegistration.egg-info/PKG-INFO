@@ -1,0 +1,7 @@
+Metadata-Version: 2.1
+Name: FrustumRegistration
+Version: 0.0.1
+Summary: Library to register point cloud and image.
+Author: Jiaxin Li
+Author-email: li.jiaxin@nutonomy.com
+License-File: LICENSE
