@@ -6,6 +6,8 @@ import math
 import os
 import shutil
 import torch
+import sys
+sys.path.append('../')
 from torch.utils.tensorboard import SummaryWriter
 
 import matplotlib
