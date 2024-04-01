@@ -40,6 +40,7 @@ The intuition is to perform the ``Inverse Camera Projection``, as shown in the i
 - [Oxford coarse classification model](https://drive.google.com/drive/folders/1rycR7xtptDA9gqh-p4n5AsZtu0d3iKsC?usp=sharing)
 - [Oxford coarse \& fine classification model](https://drive.google.com/drive/folders/1lzbI1PjmqmmdiVYGgkSB1yo7-7vnW9f4?usp=sharing)
 
+### my environments(moon)
 
-
-
+docker image : nvidia/cuda:12.1.0.devel-ubuntu18.04
+anaconda base
