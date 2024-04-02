@@ -14,3 +14,4 @@ dist/
 build*/
 build-frustum_reg-Desktop_Qt_5_13_0_GCC_64bit-Debug/
 core
+/datasets

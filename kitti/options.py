@@ -5,8 +5,9 @@ import torch
 
 class Options:
     def __init__(self):
-        self.dataroot = '/ssd/jiaxin/datasets/kitti'
+        # self.dataroot = '/ssd/jiaxin/datasets/kitti'
         # self.dataroot = '/data/personal/jiaxin/datasets/kitti'
+        self.dataroot = '../datasets/kitti'
         self.checkpoints_dir = 'checkpoints'
         self.version = '1.27'
         self.is_debug = False

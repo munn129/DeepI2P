@@ -31,7 +31,9 @@ class KittiCalibHelper:
         seq_folders = [name for name in os.listdir(os.path.join(self.root_path, 'calib'))]
         calib_matrix_dict = {}
         for seq in seq_folders:
-            calib_file_path = os.path.join(self.root_path, 'calib', seq, 'calib.txt')
+            # calib_file_path = os.path.join(self.root_path, 'calib', seq, 'calib.txt')
+            # error occured
+            calib_file_path = f'{self.root_path}/calib/calib.txt'
             with open(calib_file_path, 'r') as f:
                 for line in f.readlines():
                     seq_int = int(seq)
