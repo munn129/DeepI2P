@@ -7,12 +7,12 @@ import os
 import shutil
 import torch
 import sys
-sys.path.append('../')
 from torch.utils.tensorboard import SummaryWriter
 
 import matplotlib
 matplotlib.use('Agg')
 
+sys.path.append('../')
 from models.multimodal_classifier import MMClassifer, MMClassiferCoarse
 from data.kitti_pc_img_pose_loader import KittiLoader
 from kitti import options

@@ -7,10 +7,12 @@ import os
 from torch.utils.tensorboard import SummaryWriter
 import cv2
 import random
+import sys
 
 import matplotlib
 matplotlib.use('TkAgg')
 
+sys.path.append('../')
 from models.multimodal_classifier import MMClassifer
 from data.kitti_pc_img_pose_loader import KittiLoader
 from kitti import options

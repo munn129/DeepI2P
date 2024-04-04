@@ -7,8 +7,10 @@ import matplotlib
 matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 
-from data import kitti_helper
-from data import augmentation
+# from data import kitti_helper
+# from data import augmentation
+import kitti_helper
+import augmentation
 
 
 def make_kitti_dataset(root_path, mode, opt):
@@ -39,7 +41,7 @@ def make_kitti_dataset(root_path, mode, opt):
 
 
 if __name__ == '__main__':
-    root_path = '/ssd/jiaxin/datasets/kitti'
+    root_path = '../../datasets/kitti'
     seq_list = range(0, 22)
     np_folder = 'voxel0.1-SNr0.6'
 
