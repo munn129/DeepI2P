@@ -44,3 +44,11 @@ The intuition is to perform the ``Inverse Camera Projection``, as shown in the i
 
 docker image : nvidia/cuda:12.1.0.devel-ubuntu18.04
 anaconda base
+
+source /opt/conda/etc/profile.d/conda.sh
+
+apt install -y libgl1-mesa-glx
+apt install -y  libglib2.0-0
+
+pip install open3d
+pip install tensorboard
