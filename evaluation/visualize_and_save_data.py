@@ -55,7 +55,7 @@ if __name__ == "__main__":
     if not os.path.exists(data_output_path):
         os.mkdir(data_output_path)
 
-    is_plot = True
+    is_plot = False
     is_save_visualization = True
     is_save_data = True
     iter_max = 1e9
