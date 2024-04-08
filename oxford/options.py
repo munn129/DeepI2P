@@ -5,8 +5,9 @@ import torch
 
 class Options:
     def __init__(self):
-        self.dataroot = '/media/tohar/ExtSSD/jiaxin/oxford'
+        # self.dataroot = '/media/tohar/ExtSSD/jiaxin/oxford'
         # self.dataroot = '/data/personal/jiaxin/datasets/kitti'
+        self.dataroot = '../../oxford_train_test_split_and_evaluation_dataset'
         self.checkpoints_dir = 'checkpoints'
         self.version = '0.1-fine'
         self.is_debug = False

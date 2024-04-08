@@ -7,13 +7,17 @@ import os
 from torch.utils.tensorboard import SummaryWriter
 import cv2
 
-import matplotlib
-matplotlib.use('TkAgg')
+# import matplotlib
+# matplotlib.use('TkAgg')
 
+import matplotlib.pyplot as plt
+
+import sys
+sys.path.append('../')
 from models.multimodal_classifier import MMClassifer, MMClassiferCoarse
 from data.kitti_pc_img_pose_loader import KittiLoader
 from data.oxford_pc_img_pose_loader import OxfordLoader
-from data.nuscenes_pc_img_pose_loader import nuScenesLoader
+# from data.nuscenes_pc_img_pose_loader import nuScenesLoader
 from util import vis_tools
 import kitti.options
 import oxford.options
@@ -27,6 +31,7 @@ if __name__ == "__main__":
     # root_path = '/ssd/jiaxin/point-img-feature/kitti/save/1.30-noTranslation'
     root_path = '/home/tohar/repos/point-img-feature/oxford/workspace/640x384-noCrop'
     # root_path = '/ssd/jiaxin/point-img-feature/nuscenes_t/save/3.3-160x320-accu'
+    root_path = '../../'
 
     dataset = 'oxford'
 
@@ -50,7 +55,7 @@ if __name__ == "__main__":
     if not os.path.exists(data_output_path):
         os.mkdir(data_output_path)
 
-    is_plot = False
+    is_plot = True
     is_save_visualization = True
     is_save_data = True
     iter_max = 1e9
@@ -60,8 +65,8 @@ if __name__ == "__main__":
         testset = KittiLoader(opt.dataroot, 'val_random_Ry', opt)
     elif dataset == 'oxford':
         testset = OxfordLoader(opt.dataroot, 'val_random_Ry', opt)
-    elif dataset == 'nuscenes':
-        testset = nuScenesLoader(opt.dataroot, 'val_random_Ry', opt)
+    # elif dataset == 'nuscenes':
+    #     testset = nuScenesLoader(opt.dataroot, 'val_random_Ry', opt)
     testloader = torch.utils.data.DataLoader(testset, batch_size=opt.batch_size, shuffle=False,
                                              num_workers=opt.dataloader_threads, pin_memory=True)
     print('#testing point clouds = %d' % len(testset))
@@ -70,7 +75,8 @@ if __name__ == "__main__":
         model = MMClassifer(opt, writer=None)
     else:
         model = MMClassiferCoarse(opt, writer=None)
-    model_path = os.path.join(root_path, 'checkpoints/best.pth')
+    # model_path = os.path.join(root_path, 'checkpoints/best.pth')
+    model_path = os.path.join(root_path, 'oxford_coarse_and_fine_classification_model', 'checkpoints', 'best.pth')
     print(model_path)
     model.load_model(model_path)
     model.detector.eval()
@@ -135,13 +141,13 @@ if __name__ == "__main__":
             coarse_label_vis_np = coarse_label_np[b, :]  # N
 
             # compute fine gt
-            pc_pxpy_vis_np_scaled_int = np.floor(KP_pc_pxpy_vis_np / opt.img_fine_resolution_scale).astype(np.int)  # 2xN
+            pc_pxpy_vis_np_scaled_int = np.floor(KP_pc_pxpy_vis_np / opt.img_fine_resolution_scale).astype(np.int64)  # 2xN
             fine_labels_vis_np = pc_pxpy_vis_np_scaled_int[0, :] + pc_pxpy_vis_np_scaled_int[1, :] * W_fine  # N
 
             # print accuracy
-            current_coarse_accuracy = np.mean((coarse_prediction_vis_np == coarse_label_vis_np).astype(np.float))
+            current_coarse_accuracy = np.mean((coarse_prediction_vis_np == coarse_label_vis_np).astype(np.float64))
             gt_in_img_mask = coarse_label_vis_np == 1
-            current_fine_accuracy = np.mean((fine_prediction_vis_np[gt_in_img_mask] == fine_labels_vis_np[gt_in_img_mask]).astype(np.float))
+            current_fine_accuracy = np.mean((fine_prediction_vis_np[gt_in_img_mask] == fine_labels_vis_np[gt_in_img_mask]).astype(np.float64))
             print('%d coarse accuracy %.4f, fine accuracy %.4f' % (counter, current_coarse_accuracy, current_fine_accuracy))
             coarse_accuracy_sum += current_coarse_accuracy
             fine_accuracy_sum += current_fine_accuracy
