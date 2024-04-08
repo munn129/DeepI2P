@@ -283,7 +283,7 @@ class OxfordLoader(data.Dataset):
         if pc_np.shape[1] > 2 * self.opt.input_pt_num:
             # point cloud too huge, voxel grid downsample first
             # pc_np, intensity_np = downsample_with_reflectance(pc_np, intensity_np[0], voxel_grid_downsample_size=0.2)
-            pc_np, intensity_np = downsample_with_reflectance(pc_np, intensity_np[0], voxel_grid_downsample_size=1)
+            pc_np, intensity_np = downsample_with_reflectance(pc_np, intensity_np[0], voxel_grid_downsample_size=10)
             intensity_np = np.expand_dims(intensity_np, axis=0)
             pc_np = pc_np.astype(np.float32)
             intensity_np = intensity_np.astype(np.float32)
