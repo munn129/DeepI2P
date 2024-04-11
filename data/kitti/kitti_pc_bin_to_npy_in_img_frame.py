@@ -12,6 +12,8 @@ import matplotlib
 matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 
+import sys
+sys.path.append('../../')
 from util import vis_tools
 from data.kitti_helper import *
 
@@ -54,13 +56,16 @@ def process_kitti(root_path,
             # convert to Open3D point cloud datastructure
             pcd = open3d.geometry.PointCloud()
             pcd.points = open3d.utility.Vector3dVector(pc_np.T)
-            downpcd = open3d.geometry.voxel_down_sample(pcd, voxel_size=downsample_voxel_size)
+            # downpcd = open3d.geometry.voxel_down_sample(pcd, voxel_size=downsample_voxel_size)
+            downpcd = pcd.voxel_down_sample(voxel_size=downsample_voxel_size)
 
             # surface normal computation
-            open3d.geometry.estimate_normals(downpcd,
-                                             search_param=open3d.geometry.KDTreeSearchParamHybrid(radius=sn_radius,
-                                                                                                  max_nn=sn_max_nn))
-            open3d.geometry.orient_normals_to_align_with_direction(downpcd, [0, 0, 1])
+            # open3d.geometry.estimate_normals(downpcd,
+            #                                  search_param=open3d.geometry.KDTreeSearchParamHybrid(radius=sn_radius,
+            #                                                                                       max_nn=sn_max_nn))
+            downpcd.estimate_normals(search_param=open3d.geometry.KDTreeSearchParamHybrid(radius=sn_radius, max_nn=sn_max_nn))
+            # open3d.geometry.orient_normals_to_align_with_direction(downpcd, [0, 0, 1])
+            downpcd.orient_normals_to_align_with_direction([0, 0, 1])
             # open3d.visualization.draw_geometries([downpcd])
 
             # get numpy array from pcd
@@ -180,8 +185,9 @@ def process_kitti(root_path,
 
 
 if __name__ == '__main__':
-    root_path = '/ssd/jiaxin/datasets/kitti'
-    pc_bin_root_path = '/data/datasets/data_odometry_velodyne/dataset'
+    root_path = '../../datasets/kitti'
+    # pc_bin_root_path = '/data/datasets/data_odometry_velodyne/dataset'
+    pc_bin_root_path = '../../datasets/kitti/lidar'
     seq_list = list(range(22))
 
     downsample_voxel_size = 0.1

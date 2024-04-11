@@ -17,7 +17,10 @@ import matplotlib
 # matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 
-from data import augmentation
+import augmentation
+
+import sys
+sys.path.append('../')
 from util import vis_tools
 from kitti import options
 from data.kitti_helper import *
@@ -447,7 +450,7 @@ class KittiLoader(data.Dataset):
 
 
 if __name__ == '__main__':
-    root_path = '/ssd/jiaxin/datasets/kitti'
+    root_path = '../datasets/kitti'
     opt = options.Options()
     kittiloader = KittiLoader(root_path, 'train', opt)
 

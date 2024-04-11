@@ -25,7 +25,8 @@ def make_kitti_dataset(root_path, mode, opt):
 
     np_folder = 'voxel0.1-SNr0.6'
     for seq in seq_list:
-        pc_folder = os.path.join(root_path, 'data_odometry_velodyne', 'sequences', '%02d' % seq, np_folder)
+        # pc_folder = os.path.join(root_path, 'data_odometry_velodyne', 'sequences', '%02d' % seq, np_folder)
+        pc_folder = os.path.join(root_path, 'lidar', 'sequences', '%02d' % seq, np_folder)
         img2_folder = os.path.join(root_path, 'data_odometry_color', 'sequences', '%02d' % seq, 'image_2')
         img3_folder = os.path.join(root_path, 'data_odometry_color', 'sequences', '%02d' % seq, 'image_3')
         sample_num = round(len(os.listdir(pc_folder)))
@@ -41,7 +42,7 @@ def make_kitti_dataset(root_path, mode, opt):
 
 
 if __name__ == '__main__':
-    root_path = '../../datasets/kitti'
+    root_path = '../datasets/kitti'
     seq_list = range(0, 22)
     np_folder = 'voxel0.1-SNr0.6'
 
