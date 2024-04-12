@@ -1,3 +1,6 @@
+# this file needs npy lidar file
+# kitti/data_odometry_velodyne/sequences/00/voxel0.1-SNr0.6/000000.npy
+
 import os
 import os.path
 import numpy as np

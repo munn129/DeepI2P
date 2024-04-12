@@ -1,4 +1,29 @@
 #DeepI2P: Image-to-Point Cloud Registration via Deep Classification
+
+
+### my environments(moon)
+* it is forked project, I modified some codes for python 3.10
+
+docker image : nvidia/cuda:12.1.0.devel-ubuntu18.04
+anaconda base
+
+source /opt/conda/etc/profile.d/conda.sh
+
+apt install -y libgl1-mesa-glx
+apt install -y  libglib2.0-0
+
+pip install open3d
+pip install tensorboard
+
+### using pretrained model and dataset
+- execute visualize_and_save_data.py
+
+### Guidence
+1. execute python kitti_pc_bin_to_npy_with_downsample_sn.py
+2. execute kitti_png_to_npy.py
+
+
+
 ## Summary
 ### [Video](resources/deepi2p-cvpr2021-compressed.mp4)
 PyTorch implementation for our CVPR 2021 paper DeepI2P. DeepI2P solves the problem of cross modality registration, i.e, solve the relative rotation `R` and translation `t` between the camera and the lidar.
@@ -39,16 +64,3 @@ The intuition is to perform the ``Inverse Camera Projection``, as shown in the i
 - [Oxford train/test split and evaluation dataset](https://drive.google.com/drive/folders/1MVNDGCRXVjC-hxtW_mg4abMXmtpNVzLR?usp=sharing)
 - [Oxford coarse classification model](https://drive.google.com/drive/folders/1rycR7xtptDA9gqh-p4n5AsZtu0d3iKsC?usp=sharing)
 - [Oxford coarse \& fine classification model](https://drive.google.com/drive/folders/1lzbI1PjmqmmdiVYGgkSB1yo7-7vnW9f4?usp=sharing)
-
-### my environments(moon)
-
-docker image : nvidia/cuda:12.1.0.devel-ubuntu18.04
-anaconda base
-
-source /opt/conda/etc/profile.d/conda.sh
-
-apt install -y libgl1-mesa-glx
-apt install -y  libglib2.0-0
-
-pip install open3d
-pip install tensorboard

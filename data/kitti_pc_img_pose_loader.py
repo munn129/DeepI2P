@@ -1,3 +1,5 @@
+# this file is used when training
+
 import open3d
 import torch.utils.data as data
 import random
@@ -17,7 +19,7 @@ import matplotlib
 # matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 
-import augmentation
+from data import augmentation
 
 import sys
 sys.path.append('../')

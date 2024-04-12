@@ -1,3 +1,6 @@
+# this file needs png to npy datasets
+# e.g.) kittis/data_odometry_color_npy/sequences/00/image_2/000000.npy
+
 import numpy as np
 import open3d
 import os
