@@ -1,4 +1,7 @@
 # this file is used when training
+# but I faced this error when running kitti/train_classifier.py
+# ValueError: num_samples should be a positive integer value, but got num_samples=0
+# So, I run this file, before run kitti/train_classifier.py
 
 import open3d
 import torch.utils.data as data
@@ -19,7 +22,8 @@ import matplotlib
 # matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 
-from data import augmentation
+# from data import augmentation
+import augmentation
 
 import sys
 sys.path.append('../')

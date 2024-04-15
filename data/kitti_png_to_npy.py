@@ -49,7 +49,7 @@ if __name__ == '__main__':
     seq_list = range(0, 22)
     np_folder = 'voxel0.1-SNr0.6'
 
-    is_save_img = False
+    is_save_img = True
     is_save_pc = True
 
     calib_helper = kitti_helper.KittiCalibHelper(root_path)
