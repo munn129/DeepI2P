@@ -1,3 +1,5 @@
+# FileNotFoundError: [Errno 2] No such file or directory: '../../datasets/kitti/poses/10/000000.npz'
+
 import numpy as np
 import os
 import math
@@ -11,6 +13,8 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.cm as cm
 
+import sys
+sys.path.append('../../')
 from util import vis_tools
 from data import kitti_helper
 
@@ -140,7 +144,8 @@ def accumulate_sequence(root_path, seq, Tr,
             plt.show()
 
 def main():
-    root_path = '/ssd/jiaxin/datasets/kitti'
+    # root_path = '/ssd/jiaxin/datasets/kitti'
+    root_path = '../../datasets/kitti'
     calib_helper = kitti_helper.KittiCalibHelper(root_path)
 
     is_plot = False

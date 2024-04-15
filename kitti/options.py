@@ -46,7 +46,7 @@ class Options:
         self.dataloader_threads = 10
 
         self.batch_size = 8
-        self.gpu_ids = [1]
+        self.gpu_ids = [0]
         self.device = torch.device('cuda', self.gpu_ids[0])
         self.normalization = 'batch'
         self.norm_momentum = 0.1

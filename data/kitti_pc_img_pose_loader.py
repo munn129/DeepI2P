@@ -23,9 +23,10 @@ import matplotlib
 import matplotlib.pyplot as plt
 
 # from data import augmentation
-import augmentation
 
 import sys
+sys.path.append('/workspace/DeepI2P/data')
+import augmentation
 sys.path.append('../')
 from util import vis_tools
 from kitti import options

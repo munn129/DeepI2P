@@ -1,3 +1,5 @@
+# FileNotFoundError: [Errno 2] No such file or directory: '../datasets/kitti/poses/03/000512.npz'
+
 import open3d
 import time
 import copy
