@@ -138,11 +138,12 @@ class KittiLoader(data.Dataset):
         contrast = (0.8, 1.2)
         saturation = (0.8, 1.2)
         hue = (-0.1, 0.1)
-        color_aug = transforms.ColorJitter.get_params(brightness, contrast, saturation, hue)
+        # color_aug = transforms.ColorJitter.get_params(brightness, contrast, saturation, hue)
+        color_aug = transforms.ColorJitter(brightness, contrast, saturation, hue)
         img_color_aug_np = np.array(color_aug(Image.fromarray(img_np)))
 
         return img_color_aug_np
-
+        
     def generate_random_transform(self,
                                   P_tx_amplitude, P_ty_amplitude, P_tz_amplitude,
                                   P_Rx_amplitude, P_Ry_amplitude, P_Rz_amplitude):
@@ -159,7 +160,7 @@ class KittiLoader(data.Dataset):
                   random.uniform(-P_Rz_amplitude, P_Rz_amplitude)]
 
         rotation_mat = augmentation.angles2rotation_matrix(angles)
-        P_random = np.identity(4, dtype=np.float)
+        P_random = np.identity(4, dtype=np.float64)
         P_random[0:3, 0:3] = rotation_mat
         P_random[0:3, 3] = t
 
@@ -378,8 +379,8 @@ class KittiLoader(data.Dataset):
                                                 0, math.pi*2, 0)
             Pr_inv = np.linalg.inv(Pr)
         else:
-            Pr = np.identity(4, dtype=np.float)
-            Pr_inv = np.identity(4, dtype=np.float)
+            Pr = np.identity(4, dtype=np.float64)
+            Pr_inv = np.identity(4, dtype=np.float64)
 
         P_cam_nwu = np.asarray([[0, -1, 0, 0], [0, 0, -1, 0], [1, 0, 0, 0], [0, 0, 0, 1]], dtype=pc_np.dtype)
         P_nwu_cam = np.linalg.inv(P_cam_nwu)

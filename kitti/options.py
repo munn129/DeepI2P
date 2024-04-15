@@ -8,7 +8,7 @@ class Options:
         # self.dataroot = '/ssd/jiaxin/datasets/kitti'
         # self.dataroot = '/data/personal/jiaxin/datasets/kitti'
         self.dataroot = '../datasets/kitti'
-        self.checkpoints_dir = 'checkpoints'
+        self.checkpoints_dir = ''
         self.version = '1.27'
         self.is_debug = False
         self.is_fine_resolution = True
