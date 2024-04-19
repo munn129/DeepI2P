@@ -77,6 +77,7 @@ if __name__ == "__main__":
         model = MMClassiferCoarse(opt, writer=None)
     # model_path = os.path.join(root_path, 'checkpoints/best.pth')
     model_path = os.path.join(root_path, 'oxford_coarse_and_fine_classification_model', 'checkpoints', 'best.pth')
+    # model_path = os.path.join(root_path, 'kitti_best.pth')
     print(model_path)
     model.load_model(model_path)
     model.detector.eval()

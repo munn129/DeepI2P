@@ -7,6 +7,8 @@ import numpy as np
 import open3d as o3d
 from scipy.spatial.transform import Rotation
 
+import sys
+sys.path.append('../../')
 from data import augmentation
 
 
@@ -164,6 +166,7 @@ def icp_wrapper(pc_np, pc_monodepth_np, P_init, is_plot):
 
 def main():
     root_path = '/home/tohar/repos/point-img-feature/oxford/workspace/640x384-noCrop-monodepth'
+    root_path = '../../../'
 
     visualization_folder = os.path.join(root_path, 'visualization')
     data_folder = os.path.join(root_path, 'data')

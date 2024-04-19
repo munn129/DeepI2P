@@ -14,10 +14,10 @@ import torch
 from torchvision import transforms, datasets
 
 import networks
-from layers import disp_to_depth
-from utils import download_model_if_doesnt_exist
+# from layers import disp_to_depth
+# from utils import download_model_if_doesnt_exist
 
-from deepi2p.vis_tools import plot_pc
+# from deepi2p.vis_tools import plot_pc
 
 
 def load_model():
@@ -105,6 +105,7 @@ def convert_depth_to_pointcloud(depth_np, K_np):
 
 def main():
     root_folder = '/home/tohar/repos/point-img-feature/oxford/workspace/640x384-noCrop/'
+    root_folder = '../../../oxford_coarse_and_fine_classification_model/'
 
     output_folder = os.path.join(root_folder, 'monodepth')
     if not os.path.exists(output_folder):
