@@ -122,43 +122,68 @@ def main():
     W = 640  # kitti=512, oxford=512/320/640, nuscenes 320
     is_enu2cam = 'nuscene' in root_path
 
-    filename = '000002_01'
+    # filename = '000002_01'
+    filenames = []
+    for i in range(0, 1286):
+        for j in range(0, 8):
+            filenames.append(f'{i:06d}_{j:02d}')
+    
+    file_path = 'coarse_result.txt'
 
-    point_data_np = np.load(os.path.join(data_output_path, filename + '_pc_label.npy'))
-    pc_np = point_data_np[0:3, :].astype(np.float64)
-    coarse_predictions_np = point_data_np[3, :].astype(np.int)
-    coarse_labels_np = point_data_np[4, :].astype(np.int)
-    fine_predictions_np = point_data_np[5, :].astype(np.int)
-    fine_labels_np = point_data_np[6, :].astype(np.int)
-    K_np = np.load(os.path.join(data_output_path, filename + '_K.npy')).astype(np.float64)
-    P_gt_np = np.load(os.path.join(data_output_path, filename + '_P.npy')).astype(np.float64)
-    if P_gt_np.shape[0] == 3:
-        P_gt_np = np.concatenate((P_gt_np, np.identity(4)[3:4, :]), axis=0)
-    if is_enu2cam:
-        pc_np, P_gt_np = enu2cam(pc_np, P_gt_np)
+    cnt = 1
+    t_error = 0
+    r_error = 0
 
-    P_init, init_y_angle, _, _ = get_initial_guess(pc_np, coarse_labels_np)
+    with open(file_path, 'w') as file:
+        file.write('# filename t_diff r_diff\n')
 
-    P_pred_np, final_cost, residuals = FrustumRegistration.solvePGivenK(pc_np,
-                                                                        coarse_labels_np,
-                                                                        K_np,
-                                                                        init_y_angle - math.pi / 5,
-                                                                        np.zeros(3),
-                                                                        H,
-                                                                        W,
-                                                                        [-100, -100, -100],
-                                                                        [100, 100, 100],
-                                                                        500,
-                                                                        True,  # is debug
-                                                                        is_2d,  # is_2d
-                                                                        )
+    for filename in filenames:
 
-    print("P_pred_np")
-    print(P_pred_np)
-    print("P_gt_np")
-    print(P_gt_np)
-    t_diff, r_diff = get_P_diff(P_pred_np, P_gt_np)
-    print('%s - cost: %.1f, T: %.1f, R:%.1f' % (filename, final_cost, t_diff, r_diff))
+        point_data_np = np.load(os.path.join(data_output_path, filename + '_pc_label.npy'))
+        pc_np = point_data_np[0:3, :].astype(np.float64)
+        coarse_predictions_np = point_data_np[3, :].astype(np.int)
+        coarse_labels_np = point_data_np[4, :].astype(np.int)
+        fine_predictions_np = point_data_np[5, :].astype(np.int)
+        fine_labels_np = point_data_np[6, :].astype(np.int)
+        K_np = np.load(os.path.join(data_output_path, filename + '_K.npy')).astype(np.float64)
+        P_gt_np = np.load(os.path.join(data_output_path, filename + '_P.npy')).astype(np.float64)
+        if P_gt_np.shape[0] == 3:
+            P_gt_np = np.concatenate((P_gt_np, np.identity(4)[3:4, :]), axis=0)
+        if is_enu2cam:
+            pc_np, P_gt_np = enu2cam(pc_np, P_gt_np)
+
+        P_init, init_y_angle, _, _ = get_initial_guess(pc_np, coarse_labels_np)
+
+        P_pred_np, final_cost, residuals = FrustumRegistration.solvePGivenK(pc_np,
+                                                                            coarse_labels_np,
+                                                                            K_np,
+                                                                            init_y_angle - math.pi / 5,
+                                                                            np.zeros(3),
+                                                                            H,
+                                                                            W,
+                                                                            [-100, -100, -100],
+                                                                            [100, 100, 100],
+                                                                            500,
+                                                                            True,  # is debug
+                                                                            is_2d,  # is_2d
+                                                                            )
+
+        # print("P_pred_np")
+        # print(P_pred_np)
+        # print("P_gt_np")
+        # print(P_gt_np)
+        t_diff, r_diff = get_P_diff(P_pred_np, P_gt_np)
+        # print('%s - cost: %.1f, T: %.1f, R:%.1f' % (filename, final_cost, t_diff, r_diff))
+
+        with open(file_path, 'a') as file:
+            file.write(f'{filename} {t_diff} {r_diff}\n')
+        
+        t_error += t_diff
+        r_error += r_diff
+
+    print('error')
+    print(f'avr t error: {t_error / cnt}')
+    print(f'avr r error: {r_error / cnt}')
 
 
 if __name__ == '__main__':
