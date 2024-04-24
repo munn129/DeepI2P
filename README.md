@@ -1,5 +1,7 @@
 # DeepI2P: Image-to-Point Cloud Registration via Deep Classification
 
+### I success run this code. 
+at first, I have to change code to origin
 
 ### my environments(moon)
 * it is forked project, I modified some codes for python 3.10
