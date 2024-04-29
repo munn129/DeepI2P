@@ -28,7 +28,7 @@ import sys
 sys.path.append('/workspace/DeepI2P/data')
 import augmentation
 sys.path.append('../')
-from util import vis_tools
+# from util import vis_tools
 from kitti import options
 from data.kitti_helper import *
 
@@ -459,6 +459,7 @@ class KittiLoader(data.Dataset):
 
 if __name__ == '__main__':
     root_path = '../datasets/kitti'
+    root_path = 'D:\moon ubuntu\deepi2p\kitti'
     opt = options.Options()
     kittiloader = KittiLoader(root_path, 'train', opt)
 
