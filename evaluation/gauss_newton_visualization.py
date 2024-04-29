@@ -108,7 +108,7 @@ def main():
     # root_path = '/ssd/jiaxin/point-img-feature/kitti/save/1.30-noTranslation'
     root_path = '/ssd/jiaxin/point-img-feature/oxford/save/1.16-fine-wGround-nocrop-0.5x384x640'
     # root_path = '/ssd/jiaxin/point-img-feature/nuscenes_t/save/3.3-160x320-accu'
-    root_path = 'D:\moon ubuntu\deepi2p\kitti'
+    root_path = 'D:\moon ubuntu\deepi2p\kitti_result'
 
     visualization_output_folder = 'visualization'
     visualization_output_path = os.path.join(root_path, visualization_output_folder)
@@ -181,6 +181,7 @@ def main():
         
         t_error += t_diff
         r_error += r_diff
+        cnt += 1
 
     print('error')
     print(f'avr t error: {t_error / cnt}')
