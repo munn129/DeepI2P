@@ -3,6 +3,13 @@
 ### I success run this code. 
 at first, I have to change code to origin
 
+conda create -n "name" python==3.6.9
+
+conda install anaconda::cmake
+
+conda install conda-forge::ceres-solver
+--> for python evaluation/frustum_reg/setup.py install
+
 ### my environments(moon)
 * it is forked project, I modified some codes for python 3.10
 

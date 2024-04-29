@@ -13,8 +13,10 @@ import multiprocessing
 import matplotlib
 matplotlib.use('TkAgg')
 
-from models.multimodal_classifier import MMClassifer
-from data.kitti_pc_img_pose_loader import KittiLoader
+# from models.multimodal_classifier import MMClassifer
+# from data.kitti_pc_img_pose_loader import KittiLoader
+import sys
+sys.path.append('../')
 from data.augmentation import angles2rotation_matrix
 # from kitti import options
 # from util import vis_tools
@@ -24,7 +26,7 @@ from data.augmentation import angles2rotation_matrix
 # from mpl_toolkits.mplot3d import Axes3D
 # import matplotlib.cm as cm
 
-from frustum_reg import FrustumRegistration
+import FrustumRegistration
 
 
 def transform_pc_np(P, pc_np):
@@ -106,9 +108,8 @@ def main():
     # root_path = '/ssd/jiaxin/point-img-feature/kitti/save/1.30-noTranslation'
     root_path = '/ssd/jiaxin/point-img-feature/oxford/save/1.16-fine-wGround-nocrop-0.5x384x640'
     # root_path = '/ssd/jiaxin/point-img-feature/nuscenes_t/save/3.3-160x320-accu'
-    root_path = 'D:\moon ubuntu\deepi2p'
+    root_path = 'D:\moon ubuntu\deepi2p\kitti'
 
-    root_path = '../../'
     visualization_output_folder = 'visualization'
     visualization_output_path = os.path.join(root_path, visualization_output_folder)
     data_output_folder = 'data'
@@ -118,11 +119,13 @@ def main():
     is_2d = True
     H = 384  # kitti=160, oxford=288/192/384, nuscenes 160
     W = 640  # kitti=512, oxford=512/320/640, nuscenes 320
+    H = 160
+    W = 512
     is_enu2cam = 'nuscene' in root_path
 
     filename = '001851_07'
     file_names = []
-    for i in range(0,1286):
+    for i in range(0,100):
         for j in range(0,5):
             file_names.append(f'{i:06d}_{j:02d}')
 
