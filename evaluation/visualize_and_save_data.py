@@ -4,7 +4,7 @@ import numpy as np
 import math
 import torch
 import os
-from torch.utils.tensorboard import SummaryWriter
+# from torch.utils.tensorboard import SummaryWriter
 import cv2
 
 # import matplotlib
@@ -12,8 +12,6 @@ import cv2
 
 import matplotlib.pyplot as plt
 
-import sys
-sys.path.append('../')
 from models.multimodal_classifier import MMClassifer, MMClassiferCoarse
 from data.kitti_pc_img_pose_loader import KittiLoader
 from data.oxford_pc_img_pose_loader import OxfordLoader
@@ -31,9 +29,9 @@ if __name__ == "__main__":
     # root_path = '/ssd/jiaxin/point-img-feature/kitti/save/1.30-noTranslation'
     root_path = '/home/tohar/repos/point-img-feature/oxford/workspace/640x384-noCrop'
     # root_path = '/ssd/jiaxin/point-img-feature/nuscenes_t/save/3.3-160x320-accu'
-    root_path = '../../'
+    root_path = 'D:\moon ubuntu\deepi2p'
 
-    dataset = 'oxford'
+    dataset = 'kitti'
 
     if dataset == 'kitti':
         opt = kitti.options.Options()
