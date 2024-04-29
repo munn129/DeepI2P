@@ -4,7 +4,7 @@ import numpy as np
 import math
 import torch
 import os
-from torch.utils.tensorboard import SummaryWriter
+# from torch.utils.tensorboard import SummaryWriter
 import cv2
 import random
 from scipy.spatial.transform import Rotation
@@ -13,11 +13,8 @@ import multiprocessing
 import matplotlib
 matplotlib.use('TkAgg')
 
-import sys
-sys.path.append('../')
-
-# from models.multimodal_classifier import MMClassifer
-# from data.kitti_pc_img_pose_loader import KittiLoader
+from models.multimodal_classifier import MMClassifer
+from data.kitti_pc_img_pose_loader import KittiLoader
 from data.augmentation import angles2rotation_matrix
 # from kitti import options
 # from util import vis_tools
@@ -109,6 +106,7 @@ def main():
     # root_path = '/ssd/jiaxin/point-img-feature/kitti/save/1.30-noTranslation'
     root_path = '/ssd/jiaxin/point-img-feature/oxford/save/1.16-fine-wGround-nocrop-0.5x384x640'
     # root_path = '/ssd/jiaxin/point-img-feature/nuscenes_t/save/3.3-160x320-accu'
+    root_path = 'D:\moon ubuntu\deepi2p'
 
     root_path = '../../'
     visualization_output_folder = 'visualization'
@@ -122,43 +120,53 @@ def main():
     W = 640  # kitti=512, oxford=512/320/640, nuscenes 320
     is_enu2cam = 'nuscene' in root_path
 
-    filename = '000000_00'
+    filename = '001851_07'
 
-    point_data_np = np.load(os.path.join(data_output_path, filename + '_pc_label.npy'))
-    pc_np = point_data_np[0:3, :].astype(np.float64)
-    coarse_predictions_np = point_data_np[3, :].astype(np.int)
-    coarse_labels_np = point_data_np[4, :].astype(np.int)
-    fine_predictions_np = point_data_np[5, :].astype(np.int)
-    fine_labels_np = point_data_np[6, :].astype(np.int)
-    K_np = np.load(os.path.join(data_output_path, filename + '_K.npy')).astype(np.float64)
-    P_gt_np = np.load(os.path.join(data_output_path, filename + '_P.npy')).astype(np.float64)
-    if P_gt_np.shape[0] == 3:
-        P_gt_np = np.concatenate((P_gt_np, np.identity(4)[3:4, :]), axis=0)
-    if is_enu2cam:
-        pc_np, P_gt_np = enu2cam(pc_np, P_gt_np)
+        point_data_np = np.load(os.path.join(data_output_path, filename + '_pc_label.npy'))
+        pc_np = point_data_np[0:3, :].astype(np.float64)
+        coarse_predictions_np = point_data_np[3, :].astype(np.int)
+        coarse_labels_np = point_data_np[4, :].astype(np.int)
+        fine_predictions_np = point_data_np[5, :].astype(np.int)
+        fine_labels_np = point_data_np[6, :].astype(np.int)
+        K_np = np.load(os.path.join(data_output_path, filename + '_K.npy')).astype(np.float64)
+        P_gt_np = np.load(os.path.join(data_output_path, filename + '_P.npy')).astype(np.float64)
+        if P_gt_np.shape[0] == 3:
+            P_gt_np = np.concatenate((P_gt_np, np.identity(4)[3:4, :]), axis=0)
+        if is_enu2cam:
+            pc_np, P_gt_np = enu2cam(pc_np, P_gt_np)
 
-    P_init, init_y_angle, _, _ = get_initial_guess(pc_np, coarse_labels_np)
+        P_init, init_y_angle, _, _ = get_initial_guess(pc_np, coarse_labels_np)
 
-    P_pred_np, final_cost, residuals = FrustumRegistration.solvePGivenK(pc_np,
-                                                                        coarse_labels_np,
-                                                                        K_np,
-                                                                        init_y_angle - math.pi / 5,
-                                                                        np.zeros(3),
-                                                                        H,
-                                                                        W,
-                                                                        [-100, -100, -100],
-                                                                        [100, 100, 100],
-                                                                        500,
-                                                                        True,  # is debug
-                                                                        is_2d,  # is_2d
-                                                                        )
+        P_pred_np, final_cost, residuals = FrustumRegistration.solvePGivenK(pc_np,
+                                                                            coarse_labels_np,
+                                                                            K_np,
+                                                                            init_y_angle - math.pi / 5,
+                                                                            np.zeros(3),
+                                                                            H,
+                                                                            W,
+                                                                            [-100, -100, -100],
+                                                                            [100, 100, 100],
+                                                                            500,
+                                                                            True,  # is debug
+                                                                            is_2d,  # is_2d
+                                                                            )
 
-    print("P_pred_np")
-    print(P_pred_np)
-    print("P_gt_np")
-    print(P_gt_np)
-    t_diff, r_diff = get_P_diff(P_pred_np, P_gt_np)
-    print('%s - cost: %.1f, T: %.1f, R:%.1f' % (filename, final_cost, t_diff, r_diff))
+        # print("P_pred_np")
+        # print(P_pred_np)
+        # print("P_gt_np")
+        # print(P_gt_np)
+        t_diff, r_diff = get_P_diff(P_pred_np, P_gt_np)
+        # print('%s - cost: %.1f, T: %.1f, R:%.1f' % (filename, final_cost, t_diff, r_diff))
+
+        with open(file_path, 'a') as file:
+            file.write(f'{filename} {t_diff} {r_diff}\n')
+        
+        t_error += t_diff
+        r_error += r_diff
+
+    print('error')
+    print(f'avr t error: {t_error / cnt}')
+    print(f'avr r error: {r_error / cnt}')
 
 
 if __name__ == '__main__':
