@@ -121,6 +121,21 @@ def main():
     is_enu2cam = 'nuscene' in root_path
 
     filename = '001851_07'
+    file_names = []
+    for i in range(0,1286):
+        for j in range(0,5):
+            file_names.append(f'{i:06d}_{j:02d}')
+
+    file_path = 'coarse_result.txt'
+    
+    cnt = 1
+    t_error = 0
+    r_error = 0
+
+    with open(file_path, 'w') as file:
+        file.write('filename t_diff r_diff\n')
+
+    for filename in file_names:
 
         point_data_np = np.load(os.path.join(data_output_path, filename + '_pc_label.npy'))
         pc_np = point_data_np[0:3, :].astype(np.float64)
