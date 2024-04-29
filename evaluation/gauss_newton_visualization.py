@@ -13,18 +13,21 @@ import multiprocessing
 import matplotlib
 matplotlib.use('TkAgg')
 
-from models.multimodal_classifier import MMClassifer
-from data.kitti_pc_img_pose_loader import KittiLoader
+import sys
+sys.path.append('../')
+
+# from models.multimodal_classifier import MMClassifer
+# from data.kitti_pc_img_pose_loader import KittiLoader
 from data.augmentation import angles2rotation_matrix
-from kitti import options
-from util import vis_tools
-from data import augmentation
+# from kitti import options
+# from util import vis_tools
+# from data import augmentation
 
-import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
-import matplotlib.cm as cm
+# import matplotlib.pyplot as plt
+# from mpl_toolkits.mplot3d import Axes3D
+# import matplotlib.cm as cm
 
-import FrustumRegistration
+from frustum_reg import FrustumRegistration
 
 
 def transform_pc_np(P, pc_np):
@@ -107,6 +110,7 @@ def main():
     root_path = '/ssd/jiaxin/point-img-feature/oxford/save/1.16-fine-wGround-nocrop-0.5x384x640'
     # root_path = '/ssd/jiaxin/point-img-feature/nuscenes_t/save/3.3-160x320-accu'
 
+    root_path = '../../'
     visualization_output_folder = 'visualization'
     visualization_output_path = os.path.join(root_path, visualization_output_folder)
     data_output_folder = 'data'
@@ -118,7 +122,7 @@ def main():
     W = 640  # kitti=512, oxford=512/320/640, nuscenes 320
     is_enu2cam = 'nuscene' in root_path
 
-    filename = '001851_07'
+    filename = '000000_00'
 
     point_data_np = np.load(os.path.join(data_output_path, filename + '_pc_label.npy'))
     pc_np = point_data_np[0:3, :].astype(np.float64)
