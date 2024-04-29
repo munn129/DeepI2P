@@ -12,6 +12,8 @@ import cv2
 
 import matplotlib.pyplot as plt
 
+import sys
+sys.path.append('../')
 from models.multimodal_classifier import MMClassifer, MMClassiferCoarse
 from data.kitti_pc_img_pose_loader import KittiLoader
 from data.oxford_pc_img_pose_loader import OxfordLoader
@@ -30,6 +32,7 @@ if __name__ == "__main__":
     root_path = '/home/tohar/repos/point-img-feature/oxford/workspace/640x384-noCrop'
     # root_path = '/ssd/jiaxin/point-img-feature/nuscenes_t/save/3.3-160x320-accu'
     root_path = 'D:\moon ubuntu\deepi2p'
+    root_path = '../datasets'
 
     dataset = 'kitti'
 
@@ -74,8 +77,8 @@ if __name__ == "__main__":
     else:
         model = MMClassiferCoarse(opt, writer=None)
     # model_path = os.path.join(root_path, 'checkpoints/best.pth')
-    model_path = os.path.join(root_path, 'oxford_coarse_and_fine_classification_model', 'checkpoints', 'best.pth')
-    # model_path = os.path.join(root_path, 'kitti_best.pth')
+    # model_path = os.path.join(root_path, 'oxford_coarse_and_fine_classification_model', 'checkpoints', 'best.pth')
+    model_path = os.path.join(root_path, 'kitti_best.pth')
     print(model_path)
     model.load_model(model_path)
     model.detector.eval()
@@ -103,9 +106,14 @@ if __name__ == "__main__":
             fine_prediction = coarse_prediction
 
         # transform and project point cloud
+        # pc_homo = torch.cat((pc,
+        #                      torch.ones((B, 1, N), dtype=pc.dtype)),
+        #                     dim=1)  # Bx4xN
         pc_homo = torch.cat((pc,
-                             torch.ones((B, 1, N), dtype=pc.dtype)),
+                             torch.ones((B, 1, N), dtype=torch.float32)),
                             dim=1)  # Bx4xN
+        pc_homo = pc_homo.type(torch.float32)
+        P = P.type(torch.float32)
         P_pc_homo = torch.matmul(P, pc_homo)  # Bx4x4 * Bx4xN -> Bx4xN
         P_pc = P_pc_homo[:, 0:3, :]  # Bx3xN
         KP_pc = torch.matmul(K, P_pc)
