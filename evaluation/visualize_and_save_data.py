@@ -88,13 +88,11 @@ if __name__ == "__main__":
     counter = 0
     coarse_accuracy_sum = 0
     fine_accuracy_sum = 0
-    cnt = 0
     total_time = 0
     
     for i, data in enumerate(testloader):
 
-        cnt += 1
-        start_time = time.time()
+        
 
         pc, intensity, sn, node_a, node_b, \
         P, img, K, t_ij = data
@@ -147,6 +145,9 @@ if __name__ == "__main__":
         t_ij_np = t_ij.cpu().numpy()  # Bx3
 
         for b in range(B):
+
+            start_time = time.time()
+
             pc_vis_np = pc_np[b, :, :]  # 3xN
             P_pc_vis_np = P_pc_np[b, :, :]  # 3xN
             img_vis_np = imgs_np[b, :, :, :]  # HxWx3
@@ -168,6 +169,8 @@ if __name__ == "__main__":
             coarse_accuracy_sum += current_coarse_accuracy
             fine_accuracy_sum += current_fine_accuracy
             counter += 1
+            total_time += time.time() - start_time
+            print(f'avr processing time: {total_time/counter}')
 
             if opt.is_fine_resolution:
                 img_vis_fine_np = vis_tools.get_classification_visualization(KP_pc_pxpy_vis_np,
@@ -232,15 +235,15 @@ if __name__ == "__main__":
 
                 plt.show()
 
+
         if i >= iter_max:
             break
 
-        total_time += start_time - time.time()
 
     print('Overall coarse accuracy %.4f, fine accuracy %.4f' % (coarse_accuracy_sum/counter,
                                                                 fine_accuracy_sum/counter))
 
-    print(f'avr time is {total_time/cnt}')
+    print(f'avr time is {total_time/counter}')
 
 
 
