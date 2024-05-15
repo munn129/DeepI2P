@@ -28,7 +28,6 @@ from data.augmentation import angles2rotation_matrix
 
 import FrustumRegistration
 
-
 def transform_pc_np(P, pc_np):
     """
 
@@ -108,7 +107,7 @@ def main():
     # root_path = '/ssd/jiaxin/point-img-feature/kitti/save/1.30-noTranslation'
     root_path = '/ssd/jiaxin/point-img-feature/oxford/save/1.16-fine-wGround-nocrop-0.5x384x640'
     # root_path = '/ssd/jiaxin/point-img-feature/nuscenes_t/save/3.3-160x320-accu'
-    root_path = 'D:\moon ubuntu\deepi2p\kitti_result'
+    root_path = 'D:\moon ubuntu\deepi2p\oxford_result'
 
     visualization_output_folder = 'visualization'
     visualization_output_path = os.path.join(root_path, visualization_output_folder)
@@ -119,14 +118,12 @@ def main():
     is_2d = True
     H = 384  # kitti=160, oxford=288/192/384, nuscenes 160
     W = 640  # kitti=512, oxford=512/320/640, nuscenes 320
-    H = 160
-    W = 512
     is_enu2cam = 'nuscene' in root_path
 
     filename = '001851_07'
     file_names = []
-    for i in range(0,100):
-        for j in range(0,5):
+    for i in range(0,1286):
+        for j in range(0,8):
             file_names.append(f'{i:06d}_{j:02d}')
 
     file_path = 'coarse_result.txt'
@@ -138,7 +135,10 @@ def main():
     with open(file_path, 'w') as file:
         file.write('filename t_diff r_diff\n')
 
+    total_time = 0
     for filename in file_names:
+        
+        strat_time = time.time()
 
         point_data_np = np.load(os.path.join(data_output_path, filename + '_pc_label.npy'))
         pc_np = point_data_np[0:3, :].astype(np.float64)
@@ -176,6 +176,8 @@ def main():
         t_diff, r_diff = get_P_diff(P_pred_np, P_gt_np)
         # print('%s - cost: %.1f, T: %.1f, R:%.1f' % (filename, final_cost, t_diff, r_diff))
 
+        total_time += time.time() - strat_time
+
         with open(file_path, 'a') as file:
             file.write(f'{filename} {t_diff} {r_diff}\n')
         
@@ -186,6 +188,7 @@ def main():
     print('error')
     print(f'avr t error: {t_error / cnt}')
     print(f'avr r error: {r_error / cnt}')
+    print(f'avr time: {total_time/cnt}')
 
 
 if __name__ == '__main__':
