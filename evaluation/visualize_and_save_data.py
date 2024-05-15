@@ -26,6 +26,8 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.cm as cm
 
+import time
+
 
 if __name__ == "__main__":
     # root_path = '/ssd/jiaxin/point-img-feature/kitti/save/1.30-noTranslation'
@@ -34,7 +36,7 @@ if __name__ == "__main__":
     root_path = 'D:\moon ubuntu\deepi2p'
     root_path = '../datasets'
 
-    dataset = 'kitti'
+    dataset = 'oxford'
 
     if dataset == 'kitti':
         opt = kitti.options.Options()
@@ -57,8 +59,8 @@ if __name__ == "__main__":
         os.mkdir(data_output_path)
 
     is_plot = False
-    is_save_visualization = True
-    is_save_data = True
+    is_save_visualization = False
+    is_save_data = False
     iter_max = 1e9
     circle_size = 1
 
@@ -78,7 +80,7 @@ if __name__ == "__main__":
         model = MMClassiferCoarse(opt, writer=None)
     # model_path = os.path.join(root_path, 'checkpoints/best.pth')
     # model_path = os.path.join(root_path, 'oxford_coarse_and_fine_classification_model', 'checkpoints', 'best.pth')
-    model_path = os.path.join(root_path, 'kitti_best.pth')
+    model_path = os.path.join(root_path, 'best.pth')
     print(model_path)
     model.load_model(model_path)
     model.detector.eval()
@@ -86,7 +88,12 @@ if __name__ == "__main__":
     counter = 0
     coarse_accuracy_sum = 0
     fine_accuracy_sum = 0
+    total_time = 0
+    
     for i, data in enumerate(testloader):
+
+        
+
         pc, intensity, sn, node_a, node_b, \
         P, img, K, t_ij = data
 
@@ -138,6 +145,9 @@ if __name__ == "__main__":
         t_ij_np = t_ij.cpu().numpy()  # Bx3
 
         for b in range(B):
+
+            start_time = time.time()
+
             pc_vis_np = pc_np[b, :, :]  # 3xN
             P_pc_vis_np = P_pc_np[b, :, :]  # 3xN
             img_vis_np = imgs_np[b, :, :, :]  # HxWx3
@@ -159,6 +169,8 @@ if __name__ == "__main__":
             coarse_accuracy_sum += current_coarse_accuracy
             fine_accuracy_sum += current_fine_accuracy
             counter += 1
+            total_time += time.time() - start_time
+            print(f'avr processing time: {total_time/counter}')
 
             if opt.is_fine_resolution:
                 img_vis_fine_np = vis_tools.get_classification_visualization(KP_pc_pxpy_vis_np,
@@ -223,12 +235,15 @@ if __name__ == "__main__":
 
                 plt.show()
 
+
         if i >= iter_max:
             break
+
 
     print('Overall coarse accuracy %.4f, fine accuracy %.4f' % (coarse_accuracy_sum/counter,
                                                                 fine_accuracy_sum/counter))
 
+    print(f'avr time is {total_time/counter}')
 
 
 
